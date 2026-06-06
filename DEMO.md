@@ -1,7 +1,7 @@
 # 🎬 Live Demo Script — 5 分钟（管线 ~4 min + 旁白缓冲）
 
 **启动命令（演示配置）**：`USE_REPLICAS=1 npm start`
-（fleet 默认只跑 Round 1 = 最佳时长/冲击比；全 fleet 加 `DARWIN_FLEET_ROUNDS=2` ≈ +1.5 min）
+（fleet 默认打 Round 2 决赛轮 = 3 个想法在 75s 内最稳；全弧线 ~4:30，fleet 偶发超时则 ~5:25）
 
 ## 开场（15 秒，先把承诺甩出来）
 > "This is DarwinSaaS — a SaaS factory that evolves. In the next 3 minutes it will:
@@ -73,12 +73,12 @@
 | 现场网络挂了 | `.env.local` 设 `DARWIN_MOCK=1` + `DARWIN_VERCEL=0`，重启 → 离线全弧线照常跑（file:// 部署 + 离线打分） |
 | LLM 慢/超时 | 不用管——每段都有自动回退，管线永不卡死 |
 | 管线中途出错 | 红色 Pipeline error 横幅出现 → 重按 AWAKEN（历史已在 InsForge，archive 不丢） |
-| Replicas fleet 慢 | 默认关。只有排练 <2 min 才设 `REPLICAS_API_KEY` 上台 |
+| Replicas fleet 抽风（~1/3 概率某 VM 超 75s） | 自动回退进程内，观众只见一行日志；总时长变 ~5:25 → 压缩第四幕口播、砍第五幕（留 Q&A 演） |
 
 ## 演示前检查单
 - [ ] **先清端口**：`lsof -nP -iTCP:3000 -sTCP:LISTEN -t | xargs kill`——确保只有一个 server！
   （今天所有"灵异故障"都是双 server 抢端口导致的：旧代码接管请求、日志互相覆盖）
-- [ ] `npm run build && npm start`（生产模式比 dev 稳）
+- [ ] `npm run build && USE_REPLICAS=1 npm start`（生产模式 + fleet 开启）
 - [ ] 浏览器开两个 tab：`localhost:3000` 和 `/archive`
 - [ ] 手机连好网，准备扫码
 - [ ] 终端藏起来，全屏浏览器
