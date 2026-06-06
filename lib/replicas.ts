@@ -88,7 +88,7 @@ ${ideaBlock(ideas)}
 Judge EACH idea in your persona. Do NOT write any files, run any tools, or explore — just
 think and answer. Your FINAL message must be ONLY a raw JSON array (no prose, no markdown
 fences, no preamble), one object per idea:
-[{ "ideaId": "idea-N", "score": <0-100, harsh>, "attack": "<one sharp in-character sentence>", "pro": "<the strongest thing FOR it — one honest sentence>" }]`;
+[{ "ideaId": "idea-N", "score": <0-100, harsh>, "attack": "<one sharp in-character sentence, MAX 25 words>", "pro": "<the strongest thing FOR it, MAX 18 words>" }]`;
 
   const res = await fetch(`${API}/v1/replica`, {
     method: "POST",

@@ -59,8 +59,8 @@ the strongest case FOR each idea too. Return ONLY a JSON array, one object per i
 {
   "ideaId": "idea-N",
   "score": <0-100, how likely you'd let this one survive — be harsh>,
-  "attack": "<your single sharpest sentence against it, in character>",
-  "pro": "<the single strongest thing going FOR it — one honest sentence>"
+  "attack": "<your single sharpest sentence against it, in character — MAX 25 words>",
+  "pro": "<the single strongest thing going FOR it — one honest sentence, MAX 18 words>"
 }`;
 
   // Knowledge-pack judges write longer attacks (now attack + pro per idea); budget
