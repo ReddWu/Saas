@@ -93,6 +93,17 @@ body { min-height: 100vh; }
 .task-due { color: var(--muted); font-size: 11px; white-space: nowrap; }
 .task-topics { color: var(--muted); font-size: 12px; margin-top: 6px; }
 .hypothesis { margin-top: 8px; font-size: 12px; color: var(--gold); background: rgba(255,209,102,.08); border: 1px solid rgba(255,209,102,.35); border-radius: 8px; padding: 6px 10px; }
+.track-badge { font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 999px; margin-right: 8px; vertical-align: middle; white-space: nowrap; }
+.track-badge.build { color: #ffb86e; border: 1px solid #ffb86e; }
+.track-badge.growth { color: var(--cyan); border: 1px solid var(--cyan); }
+.fb-block.mvp { background: var(--panel2); border: 1px solid var(--border); border-radius: 10px; padding: 12px; }
+.fb-block h3.fb-mvp { color: #ffb86e; }
+.usable-bar { color: #ffb86e; font-weight: 700; }
+.fb-item.cut { color: var(--muted); }
+.handoff { background: var(--panel2); border: 1px solid var(--purple); border-radius: 10px; padding: 12px; margin-top: 12px; }
+.handoff h3 { color: var(--purple); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+.copybtn { display: block; margin-top: 10px; background: var(--purple); color: #14101c; font-weight: 700; border: none; padding: 9px 14px; border-radius: 8px; font-size: 13px; cursor: pointer; }
+.copybtn:hover { opacity: .9; }
 
 /* Species Archive */
 .backlink, .archivelink { color: var(--muted); font-size: 13px; text-decoration: none; border: 1px solid var(--border); padding: 8px 14px; border-radius: 10px; }

@@ -18,7 +18,7 @@ export async function runMutation(
   survivor: Idea,
   bet: PredictionMatrix,
   factory: FactoryResult
-): Promise<{ won: boolean; finalUrl: string; runs: FitnessRun[] }> {
+): Promise<{ won: boolean; finalUrl: string; finalDir: string; runs: FitnessRun[] }> {
   ev.stage("mutation", "🧬 Mutation — measure, mutate, survive");
   const runs: FitnessRun[] = [];
   let url = factory.deploy.url;
@@ -41,7 +41,7 @@ export async function runMutation(
 
     if (passed) {
       ev.alert("green", `BET WON — SEO ${res.score} ≥ target ${bet.target}. The species survives.`);
-      return { won: true, finalUrl: url, runs };
+      return { won: true, finalUrl: url, finalDir: dir, runs };
     }
 
     ev.alert("red", `BET FAILING — SEO ${res.score} < target ${bet.target}. Mutation required.`);
@@ -64,7 +64,7 @@ export async function runMutation(
   }
 
   ev.alert("red", `Bet not met after ${MAX_CYCLES} cycles. Marked for further evolution.`);
-  return { won: false, finalUrl: url, runs };
+  return { won: false, finalUrl: url, finalDir: dir, runs };
 }
 
 async function opsDiagnosis(idea: Idea, bet: PredictionMatrix, score: number): Promise<string> {

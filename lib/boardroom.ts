@@ -67,7 +67,7 @@ the strongest case FOR each idea too. Return ONLY a JSON array, one object per i
   // generously so the 10-idea JSON array never truncates mid-string (-> mock fallback).
   const raw = await llmJson<PersonaVerdict[]>(prompt, {
     system: persona.system,
-    maxTokens: 6500,
+    maxTokens: 8000,
     temperature: 0.85,
   });
   return raw.map((v) => ({ ...v, persona: personaId }));

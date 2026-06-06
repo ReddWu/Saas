@@ -24,10 +24,14 @@ on its own launch success, then **rewrites its own code** until it wins the bet.
    source (SEO landing pages, meta tags, structured data, sitemap) → redeploys → re-measures
    → **passes** → green. The species survives.
 5. **🧭 Founder** — the boardroom flips from prosecution to advocacy: the **Founder's
-   Brief** (why it wins — precedent-anchored, opportunities, risks, your input → the
-   milestones out) plus a self-assigned **Growth Backlog** where every task is a
-   falsifiable bet (e.g. *"2 blog posts/day until 20 are live — hypothesis: +1000 search
-   impressions"*, topics sourced from the product **and today's live HN trends**).
+   Brief** (why it wins — precedent-anchored; opportunities; risks; **🔧 what makes it
+   USABLE** — a falsifiable usability bar, the 1-3 core features, what to cut, the exact
+   stack), a **30-day build×growth battle plan** (4 weekly BUILD milestones interleaved
+   with content/launch/interview tasks — every task a falsifiable bet, e.g. *"2 blog
+   posts/day until 20 are live — hypothesis: +1000 search impressions"*), and the
+   **🚀 Hand-off Kit**: Darwin pushes the winning site to a fresh GitHub repo with a
+   `BUILDME.md` relay prompt — clone it, open Claude Code / Codex, and continue straight
+   into building the real product (recommended base: raphael-starterkit).
    DarwinSaaS is a long-term founder copilot, not a page generator.
 
 ## Run it

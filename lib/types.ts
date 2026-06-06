@@ -49,6 +49,13 @@ export interface FounderBrief {
   whyItWins: string[]; // 3 precedent-anchored arguments FOR the idea
   opportunities: string[];
   risks: string[];
+  // What turns the smoke-test page into a USABLE product — the build guidance.
+  mvp: {
+    usableWhen: string; // falsifiable usability bar, e.g. "a stranger completes X unaided"
+    core: string[]; // the 1-3 features that constitute usable
+    cut: string[]; // explicitly NOT in v1
+    stack: string; // concrete build stack recommendation
+  };
   input: { money: string; hoursPerWeek: string; skills: string[] }; // what YOU invest
   output: { m1: string; m3: string; m6: string }; // milestones at 1/3/6 months
 }
@@ -57,6 +64,7 @@ export interface FounderBrief {
 // it carries a falsifiable hypothesis with a metric and target.
 export interface GrowthTask {
   id: string;
+  track: "build" | "growth"; // build = make it usable; growth = make it found
   title: string; // e.g. "Write & publish 2 blog posts/day (20 total)"
   cadence: string; // e.g. "2/day × 10 days"
   topics?: string[]; // first topics: product-related + today's trend hooks
@@ -80,4 +88,5 @@ export type DarwinEvent =
   | { type: "alert"; level: "red" | "green"; msg: string; ts: number }
   | { type: "brief"; brief: FounderBrief; ts: number }
   | { type: "tasks"; tasks: GrowthTask[]; ts: number }
+  | { type: "handoff"; repoUrl: string; prompt: string; ts: number }
   | { type: "done"; survivorUrl: string; ts: number };

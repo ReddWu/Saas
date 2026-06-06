@@ -33,8 +33,8 @@ export async function runPipeline() {
     const ideas = await runScout(10);
     const { survivor, bet } = await runBoardroom(ideas);
     const factory = await runFactory(survivor);
-    const { finalUrl } = await runMutation(survivor, bet, factory);
-    await runFounder(survivor, bet);
+    const { finalUrl, finalDir } = await runMutation(survivor, bet, factory);
+    await runFounder(survivor, bet, { slug: factory.slug, dir: finalDir });
     ev.stage("done", "✅ Run complete");
     ev.done(finalUrl);
   } catch (e: any) {

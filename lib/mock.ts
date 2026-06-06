@@ -141,17 +141,26 @@ export function mockLlm(prompt: string, system?: string): string {
         "Platform risk: one API/ToS change upstream and the core loop breaks (the Twitter-ecosystem death).",
         "Feature-not-a-company: an incumbent could bundle this in a quarter (the Everpix squeeze).",
       ],
+      mvp: {
+        usableWhen: "A stranger completes the core flow end-to-end, unaided, in under 5 minutes.",
+        core: ["The single workflow that removes the pain", "Sign-in + save state", "Pay wall on the 3rd use"],
+        cut: ["Teams/sharing", "Integrations marketplace", "Mobile apps"],
+        stack: "Next.js + raphael-starterkit (Supabase auth/db) + Vercel",
+      },
       input: { money: "$500 to first revenue (domain, email tool, ads test)", hoursPerWeek: "15-20 solo-founder hours", skills: ["shipping fast", "SEO writing", "talking to users"] },
       output: { m1: "20 posts live, 10 user interviews, 100 signups", m3: "1,000 search impressions/day, first 10 paying customers", m6: "$1k MRR or a documented kill decision" },
     });
   }
-  // Growth Backlog — self-assigned tasks, each a falsifiable bet
-  if (/growth backlog/i.test(prompt)) {
+  // 30-day battle plan — build × growth tracks, each task a falsifiable bet
+  if (/30-day battle plan|growth backlog/i.test(prompt)) {
     return JSON.stringify([
-      { title: "Write & publish 2 blog posts/day until 20 are live", cadence: "2/day × 10 days", topics: ["How [pain] silently costs you revenue", "X alternatives compared (2026)", "We analyzed 100 failures at [workflow]", "The 10-minute setup guide", "Why we charge from day one", "What today's HN front page means for [niche]"], hypothesis: "20 posts lift Search Console impressions by 1000", metric: "GSC impressions", target: 1000, dueInDays: 10 },
-      { title: "Launch on HN/Product Hunt + 5 niche communities", cadence: "one launch/week", hypothesis: "Launches drive 300 visits and 30 signups", metric: "signups", target: 30, dueInDays: 14 },
-      { title: "Run 10 user interviews from early signups", cadence: "3/week", hypothesis: "Interviews surface one must-fix objection blocking 50% of conversions", metric: "interviews done", target: 10, dueInDays: 21 },
-      { title: "Ship the one most-requested integration", cadence: "single sprint", hypothesis: "Top integration lifts activation rate by 20%", metric: "activation %", target: 20, dueInDays: 30 },
+      { track: "build", title: "Week 1: ship the smallest end-to-end core flow — a stranger completes it unaided", cadence: "1 sprint", hypothesis: "A working core flow converts 10% of landing visitors to try it", metric: "activation %", target: 10, dueInDays: 7 },
+      { track: "growth", title: "Write & publish 2 blog posts/day until 20 are live", cadence: "2/day × 10 days", topics: ["How [pain] silently costs you revenue", "X alternatives compared (2026)", "We analyzed 100 failures at [workflow]", "The 10-minute setup guide", "Why we charge from day one", "What today's HN front page means for [niche]"], hypothesis: "20 posts lift Search Console impressions by 1000", metric: "GSC impressions", target: 1000, dueInDays: 10 },
+      { track: "build", title: "Week 2: auth + saved state — returning users resume where they left off", cadence: "1 sprint", hypothesis: "Accounts lift week-1 retention to 25%", metric: "W1 retention %", target: 25, dueInDays: 14 },
+      { track: "growth", title: "Launch on HN/Product Hunt + 5 niche communities", cadence: "one launch/week", hypothesis: "Launches drive 300 visits and 30 signups", metric: "signups", target: 30, dueInDays: 14 },
+      { track: "build", title: "Week 3: paywall on the 3rd use — first real willingness-to-pay data", cadence: "1 sprint", hypothesis: "3+ visitors convert to paid in week 3", metric: "paying users", target: 3, dueInDays: 21 },
+      { track: "growth", title: "Run 10 user interviews from early signups", cadence: "3/week", hypothesis: "Interviews surface one must-fix objection blocking 50% of conversions", metric: "interviews done", target: 10, dueInDays: 21 },
+      { track: "build", title: "Week 4: fix the top objection from interviews and re-measure conversion", cadence: "1 sprint", hypothesis: "Fixing the #1 objection lifts conversion 20%", metric: "conversion %", target: 20, dueInDays: 28 },
     ]);
   }
   return "{}";

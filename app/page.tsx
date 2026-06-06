@@ -32,6 +32,8 @@ export default function ControlRoom() {
   const [deployUrl, setDeployUrl] = useState<string | null>(null);
   const [brief, setBrief] = useState<FounderBrief | null>(null);
   const [tasks, setTasks] = useState<GrowthTask[]>([]);
+  const [handoff, setHandoff] = useState<{ repoUrl: string; prompt: string } | null>(null);
+  const [copied, setCopied] = useState(false);
   const feedRef = useRef<HTMLDivElement>(null);
   const esRef = useRef<EventSource | null>(null);
 
@@ -80,6 +82,7 @@ export default function ControlRoom() {
       case "alert": setAlert({ level: e.level, msg: e.msg }); break;
       case "brief": setBrief(e.brief); break;
       case "tasks": setTasks(e.tasks); break;
+      case "handoff": setHandoff({ repoUrl: e.repoUrl, prompt: e.prompt }); break;
       case "done":
         // Keep the stream OPEN: closing it here broke any subsequent ⚡ AWAKEN
         // (the mount effect never re-runs, so no events would ever arrive again).
@@ -91,7 +94,7 @@ export default function ControlRoom() {
   function reset() {
     setStage(null); setIdeas([]); setSurvivorId(null); setFeed([]);
     setBet(null); setRuns([]); setAlert(null); setDeployUrl(null);
-    setBrief(null); setTasks([]);
+    setBrief(null); setTasks([]); setHandoff(null); setCopied(false);
   }
 
   async function awaken() {
@@ -238,6 +241,23 @@ export default function ControlRoom() {
                   {brief.risks?.map((r, i) => <p key={i} className="fb-item">• {r}</p>)}
                 </div>
               </div>
+              {brief.mvp && (
+                <div className="fb-block mvp">
+                  <h3 className="fb-mvp">🔧 What makes it USABLE</h3>
+                  <p className="fb-item usable-bar">🎯 {brief.mvp.usableWhen}</p>
+                  <div className="fb-cols">
+                    <div>
+                      <p className="fb-item"><b>Build only:</b></p>
+                      {brief.mvp.core?.map((c, i) => <p key={i} className="fb-item">• {c}</p>)}
+                    </div>
+                    <div>
+                      <p className="fb-item"><b>Cut from v1:</b></p>
+                      {brief.mvp.cut?.map((c, i) => <p key={i} className="fb-item cut">✂️ {c}</p>)}
+                    </div>
+                  </div>
+                  <p className="fb-item"><b>Stack:</b> {brief.mvp.stack}</p>
+                </div>
+              )}
               <div className="fb-cols">
                 <div className="fb-block">
                   <h3>📥 Your input</h3>
@@ -260,7 +280,12 @@ export default function ControlRoom() {
               {tasks.map((t) => (
                 <div key={t.id} className="task">
                   <div className="task-head">
-                    <span className="task-title">{t.title}</span>
+                    <span className="task-title">
+                      <span className={`track-badge ${t.track === "build" ? "build" : "growth"}`}>
+                        {t.track === "build" ? "🔨 BUILD" : "📣 GROWTH"}
+                      </span>
+                      {t.title}
+                    </span>
                     <span className="task-due">⏳ {t.dueInDays}d · {t.cadence}</span>
                   </div>
                   {t.topics && t.topics.length > 0 && (
@@ -271,6 +296,28 @@ export default function ControlRoom() {
                   </div>
                 </div>
               ))}
+              {handoff && (
+                <div className="handoff">
+                  <h3>🚀 Hand-off — keep building</h3>
+                  <p className="fb-item">
+                    Darwin opened a repo with the site + a relay prompt (<code>BUILDME.md</code>):
+                  </p>
+                  <a className="deploylink" href={handoff.repoUrl} target="_blank" rel="noreferrer">
+                    {handoff.repoUrl}
+                  </a>
+                  <button
+                    className="copybtn"
+                    onClick={() => {
+                      navigator.clipboard?.writeText(handoff.prompt).then(() => {
+                        setCopied(true);
+                        setTimeout(() => setCopied(false), 2000);
+                      });
+                    }}
+                  >
+                    {copied ? "✅ Copied" : "📋 Copy prompt for Claude Code / Codex"}
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>

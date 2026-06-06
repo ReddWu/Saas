@@ -22,9 +22,12 @@ a 30-day growth backlog where every task is a falsifiable bet.
    the ops agent rewrites the source, redeploys, re-measures → WINS (green). Judges
    scan the QR code and open the freshly-evolved site on their phones.
 5. **🧭 Founder** — the boardroom flips to advocacy: why it wins (precedent-anchored),
-   opportunities/risks, your input → milestones out, and a Growth Backlog
-   ("2 blog posts/day until 20 — hypothesis: +1000 search impressions", topics sourced
-   from the product + today's HN trends). Every task is the next bet.
+   opportunities/risks, **what makes it USABLE** (falsifiable usability bar + core/cut
+   feature split + exact stack), a 30-day **build×growth battle plan** (4 weekly BUILD
+   milestones interleaved with content/launch tasks — every task a falsifiable bet),
+   and the **Hand-off Kit**: Darwin pushes the site to a fresh GitHub repo with a
+   BUILDME.md relay prompt, so Claude Code / Codex can continue building the real
+   product with full context. From idea to first real line of code — one button.
 
 ## Sponsor integrations (all real, all verified end-to-end)
 
