@@ -74,6 +74,16 @@ export interface GrowthTask {
   dueInDays: number;
 }
 
+// A keyword opportunity for the survivor's SEO engine. KD/volume start as honest
+// LLM estimates ("est"); the Similarweb verification path upgrades them to real data.
+export interface KeywordRow {
+  keyword: string;
+  kd: number | null; // 0-100 difficulty, null = unknown
+  volume: number; // monthly searches
+  intent: string; // e.g. "comparison", "how-to", "tool"
+  source: "est" | "similarweb";
+}
+
 // Events streamed to the Control Room (and later persisted to InsForge realtime).
 export type DarwinEvent =
   | { type: "stage"; stage: Stage; label: string; ts: number }
@@ -89,4 +99,5 @@ export type DarwinEvent =
   | { type: "brief"; brief: FounderBrief; ts: number }
   | { type: "tasks"; tasks: GrowthTask[]; ts: number }
   | { type: "handoff"; repoUrl: string; prompt: string; ts: number }
+  | { type: "keywords"; keywords: KeywordRow[]; ts: number }
   | { type: "done"; survivorUrl: string; ts: number };

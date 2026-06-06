@@ -28,6 +28,10 @@ a 30-day growth backlog where every task is a falsifiable bet.
    and the **Hand-off Kit**: Darwin pushes the site to a fresh GitHub repo with a
    BUILDME.md relay prompt, so Claude Code / Codex can continue building the real
    product with full context. From idea to first real line of code — one button.
+6. **🔎 Keyword Lab** — keyword opportunities (KD/volume/intent) for the survivor;
+   pick one → Darwin writes an SEO post with internal + external evidence links →
+   edit it in the dashboard → publish: the live site rebuilds with the post + sitemap
+   and redeploys in seconds. The shipped site is a growing SEO machine, not a poster.
 
 ## Sponsor integrations (all real, all verified end-to-end)
 

@@ -10,6 +10,7 @@ import { CASEBOOK } from "./knowledge";
 import { liveHnSignals } from "./scout";
 import { ycNeighborBlock } from "./yc";
 import { builderPrompt, pushSiteRepo, gitPushEnabled } from "./handoff";
+import { genKeywords } from "./keywords";
 import type { Idea, PredictionMatrix, FounderBrief, GrowthTask } from "./types";
 import { ev } from "./store";
 
@@ -94,19 +95,24 @@ export async function runFounder(
   ev.stage("founder", "🧭 Founder — the case FOR it, and the plan");
   ev.log("founder", "The boardroom flips from prosecution to advocacy…");
 
-  // Brief and backlog are independent — run them in parallel (saves ~30s on stage).
-  const [brief, tasks] = await Promise.all([
+  // Brief, backlog and keyword research are independent — run all three in parallel.
+  const [brief, tasks, keywords] = await Promise.all([
     buildBrief(survivor, bet),
     (async () => {
       // Reuse today's live trends as blog-topic hooks (best-effort; null is fine).
       const trends = await liveHnSignals(8).catch(() => null);
       return buildBacklog(survivor, trends);
     })(),
+    genKeywords(survivor).catch(() => [] as import("./types").KeywordRow[]),
   ]);
 
   ev.brief(brief);
   ev.log("founder", `🛡️ Why it wins: ${brief.whyItWins?.[0] ?? "case filed."}`);
   ev.tasks(tasks);
+  if (keywords.length) {
+    ev.keywords(keywords);
+    ev.log("founder", `🔎 Keyword Lab armed: ${keywords.length} opportunities mapped (KD/volume estimated).`);
+  }
   ev.log(
     "founder",
     `📋 30-day battle plan: ${tasks.length} bets (${tasks.filter((t) => t.track === "build").length} build / ${tasks.filter((t) => t.track !== "build").length} growth)`

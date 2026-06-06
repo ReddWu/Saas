@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { DarwinEvent, Idea, PredictionMatrix, FitnessRun, Stage, FounderBrief, GrowthTask } from "@/lib/types";
+import type { DarwinEvent, Idea, PredictionMatrix, FitnessRun, Stage, FounderBrief, GrowthTask, KeywordRow } from "@/lib/types";
 
 const PERSONA_META: Record<string, { name: string; emoji: string; color: string }> = {
   socratic: { name: "Socratic Questioner", emoji: "🧐", color: "#6ee7ff" },
@@ -34,6 +34,10 @@ export default function ControlRoom() {
   const [tasks, setTasks] = useState<GrowthTask[]>([]);
   const [handoff, setHandoff] = useState<{ repoUrl: string; prompt: string } | null>(null);
   const [copied, setCopied] = useState(false);
+  const [keywords, setKeywords] = useState<KeywordRow[]>([]);
+  const [draft, setDraft] = useState<{ keyword: string; title: string; slug: string; markdown: string } | null>(null);
+  const [labBusy, setLabBusy] = useState<string | null>(null); // keyword being generated / "publish"
+  const [publishedUrl, setPublishedUrl] = useState<string | null>(null);
   const feedRef = useRef<HTMLDivElement>(null);
   const esRef = useRef<EventSource | null>(null);
 
@@ -83,6 +87,7 @@ export default function ControlRoom() {
       case "brief": setBrief(e.brief); break;
       case "tasks": setTasks(e.tasks); break;
       case "handoff": setHandoff({ repoUrl: e.repoUrl, prompt: e.prompt }); break;
+      case "keywords": setKeywords(e.keywords); break;
       case "done":
         // Keep the stream OPEN: closing it here broke any subsequent ⚡ AWAKEN
         // (the mount effect never re-runs, so no events would ever arrive again).
@@ -95,6 +100,32 @@ export default function ControlRoom() {
     setStage(null); setIdeas([]); setSurvivorId(null); setFeed([]);
     setBet(null); setRuns([]); setAlert(null); setDeployUrl(null);
     setBrief(null); setTasks([]); setHandoff(null); setCopied(false);
+    setKeywords([]); setDraft(null); setLabBusy(null); setPublishedUrl(null);
+  }
+
+  async function generateBlog(kw: KeywordRow) {
+    setLabBusy(kw.keyword); setPublishedUrl(null);
+    try {
+      const res = await fetch("/api/blog", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ keyword: kw }),
+      });
+      const d = await res.json();
+      if (d?.markdown) setDraft({ keyword: kw.keyword, title: d.title, slug: d.slug, markdown: d.markdown });
+    } finally { setLabBusy(null); }
+  }
+
+  async function publishBlog() {
+    if (!draft) return;
+    setLabBusy("publish");
+    try {
+      const res = await fetch("/api/publish", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: draft.title, slug: draft.slug, markdown: draft.markdown }),
+      });
+      const d = await res.json();
+      if (d?.url) { setPublishedUrl(d.url); setDraft(null); }
+    } finally { setLabBusy(null); }
   }
 
   async function awaken() {
@@ -318,6 +349,64 @@ export default function ControlRoom() {
                   </button>
                 </div>
               )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {keywords.length > 0 && (
+        <div className="panel kwlab">
+          <h2>🔎 Keyword Lab — pick a keyword, ship a post</h2>
+          <table className="kwtable">
+            <thead>
+              <tr><th>keyword</th><th>KD</th><th>volume/mo</th><th>intent</th><th>data</th><th></th></tr>
+            </thead>
+            <tbody>
+              {keywords.map((k) => (
+                <tr key={k.keyword}>
+                  <td className="kw">{k.keyword}</td>
+                  <td className={k.kd != null && k.kd < 30 ? "kd easy" : "kd"}>{k.kd ?? "—"}</td>
+                  <td>{k.volume.toLocaleString()}</td>
+                  <td>{k.intent}</td>
+                  <td><span className={`src ${k.source}`}>{k.source === "est" ? "est." : "Similarweb"}</span></td>
+                  <td>
+                    <button className="kwbtn" disabled={!!labBusy} onClick={() => generateBlog(k)}>
+                      {labBusy === k.keyword ? "✍️ writing…" : "✍️ Generate blog"}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {draft && (
+            <div className="kweditor">
+              <div className="kweditor-head">
+                <input
+                  className="kwtitle"
+                  value={draft.title}
+                  onChange={(e) => setDraft({ ...draft, title: e.target.value })}
+                />
+                <button className="copybtn" disabled={labBusy === "publish"} onClick={publishBlog}>
+                  {labBusy === "publish" ? "🚀 publishing…" : "🚀 Publish to the live site"}
+                </button>
+              </div>
+              <textarea
+                className="kwtext"
+                value={draft.markdown}
+                onChange={(e) => setDraft({ ...draft, markdown: e.target.value })}
+                rows={14}
+              />
+              <div className="kwhint">markdown · edit freely · internal links stay relative (/pricing.html)</div>
+            </div>
+          )}
+
+          {publishedUrl && (
+            <div className="alert green" style={{ animation: "none" }}>
+              ✍️ Published live →{" "}
+              <a href={publishedUrl} target="_blank" rel="noreferrer" style={{ color: "inherit" }}>
+                {publishedUrl}
+              </a>
             </div>
           )}
         </div>

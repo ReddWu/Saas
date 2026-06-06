@@ -88,11 +88,46 @@ export function renderWeak(idea: Idea, copy: SiteCopy): Record<string, string> {
   return { "index.html": html };
 }
 
+// Minimal markdown -> HTML for published blogs (headings, bold, links, lists, paras).
+// No dependency; good enough for LLM-authored posts.
+export function mdToHtml(md: string): string {
+  const esc2 = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const inline = (s: string) =>
+    esc2(s)
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+|\/[^)\s]*)\)/g, '<a href="$2">$1</a>')
+      .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+      .replace(/`([^`]+)`/g, "<code>$1</code>");
+  const blocks = md.split(/\n{2,}/);
+  return blocks
+    .map((b) => {
+      const t = b.trim();
+      if (!t) return "";
+      if (/^###\s/.test(t)) return `<h3>${inline(t.replace(/^###\s+/, ""))}</h3>`;
+      if (/^##\s/.test(t)) return `<h2>${inline(t.replace(/^##\s+/, ""))}</h2>`;
+      if (/^#\s/.test(t)) return `<h1>${inline(t.replace(/^#\s+/, ""))}</h1>`;
+      if (/^[-*]\s/m.test(t))
+        return `<ul>${t
+          .split(/\n/)
+          .filter((l) => /^[-*]\s/.test(l.trim()))
+          .map((l) => `<li>${inline(l.trim().replace(/^[-*]\s+/, ""))}</li>`)
+          .join("")}</ul>`;
+      return `<p>${inline(t).replace(/\n/g, "<br>")}</p>`;
+    })
+    .join("\n");
+}
+
+export interface BlogEntry {
+  slug: string;
+  title: string;
+  html: string; // body html (already converted from markdown)
+}
+
 // ---- v2: SEO-strong (title, meta, lang, semantic h1/h2, structured data, sitemap, landing pages) ----
 export function renderStrong(
   idea: Idea,
   copy: SiteCopy,
-  bet: PredictionMatrix
+  bet: PredictionMatrix,
+  blogs: BlogEntry[] = []
 ): Record<string, string> {
   const desc = esc(`${idea.pitch} ${idea.painPoint}`.slice(0, 155));
   // <-escape so model copy containing "</script>" can't break out of the JSON-LD tag.
@@ -161,8 +196,34 @@ ${extraHead}
     );
   }
 
+  // Published Keyword-Lab blogs: /blog-<slug>.html + a blog index when any exist.
+  for (const b of blogs) {
+    files[`blog-${b.slug}.html`] = page(
+      `${b.title} | ${idea.title}`,
+      `<div class="wrap">
+  <article class="hero">${b.html}</article>
+  <p><a class="cta" href="/">← ${esc(idea.title)}</a></p>
+  ${nav}
+</div>`
+    );
+  }
+  if (blogs.length) {
+    files["blog.html"] = page(
+      `Blog | ${idea.title}`,
+      `<div class="wrap">
+  <header class="hero"><h1>${esc(idea.title)} blog</h1></header>
+  <ul>${blogs.map((b) => `<li><a href="/blog-${b.slug}.html">${esc(b.title)}</a></li>`).join("\n  ")}</ul>
+  ${nav}
+</div>`
+    );
+  }
+
   // sitemap + robots help SEO score
-  const urls = ["/", ...copy.seoPages.map((p) => `/${p.slug}.html`)];
+  const urls = [
+    "/",
+    ...copy.seoPages.map((p) => `/${p.slug}.html`),
+    ...(blogs.length ? ["/blog.html", ...blogs.map((b) => `/blog-${b.slug}.html`)] : []),
+  ];
   files["sitemap.xml"] =
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
     urls.map((u) => `  <url><loc>${u}</loc></url>`).join("\n") +

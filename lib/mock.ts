@@ -163,5 +163,27 @@ export function mockLlm(prompt: string, system?: string): string {
       { track: "build", title: "Week 4: fix the top objection from interviews and re-measure conversion", cadence: "1 sprint", hypothesis: "Fixing the #1 objection lifts conversion 20%", metric: "conversion %", target: 20, dueInDays: 28 },
     ]);
   }
+  // Keyword Lab — keyword opportunities table
+  if (/keyword opportunities/i.test(prompt)) {
+    return JSON.stringify([
+      { keyword: "webhook retry best practices", kd: 28, volume: 1900, intent: "how-to" },
+      { keyword: "failed webhook recovery tool", kd: 22, volume: 720, intent: "tool" },
+      { keyword: "svix alternatives", kd: 35, volume: 480, intent: "alternative" },
+      { keyword: "webhook monitoring for stripe", kd: 31, volume: 880, intent: "tool" },
+      { keyword: "why do webhooks fail silently", kd: 18, volume: 590, intent: "pain" },
+      { keyword: "webhook replay vs retry", kd: 20, volume: 260, intent: "comparison" },
+      { keyword: "debug missing webhooks", kd: 24, volume: 1100, intent: "how-to" },
+      { keyword: "webhook reliability checklist", kd: 19, volume: 340, intent: "how-to" },
+    ]);
+  }
+  // Keyword Lab — blog draft
+  if (/SEO blog post/i.test(prompt)) {
+    const kw = (prompt.match(/Target keyword: "([^"]+)"/) || [])[1] || "the keyword";
+    return JSON.stringify({
+      title: `${kw[0].toUpperCase()}${kw.slice(1)} — the practical guide`,
+      slug: kw.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+      markdown: `# ${kw} — the practical guide\n\nIf you ship software, ${kw} is not optional — it's the difference between silent failures and a system you can trust.\n\n## Why this matters\n\nTeams lose real revenue to unhandled edge cases. The [official webhook docs](https://docs.github.com/en/webhooks) and [MDN's HTTP guide](https://developer.mozilla.org/en-US/docs/Web/HTTP) both stress idempotency and retries.\n\n## The checklist\n\n- Verify signatures on every delivery\n- Retry with exponential backoff\n- Log and replay failures — see our [use cases](/use-cases.html)\n\n## How we handle it\n\nOur approach is built directly around this pain — simple [pricing](/pricing.html), no surprises.\n\n## Get started\n\nStop losing deliveries today — [try it now](/).`,
+    });
+  }
   return "{}";
 }

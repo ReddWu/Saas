@@ -6,6 +6,7 @@ import { runBoardroom } from "./boardroom";
 import { runFactory } from "./factory";
 import { runMutation } from "./mutation";
 import { runFounder } from "./founder";
+import { setSiteState } from "./sitestate";
 import { bus, ev } from "./store";
 
 // Stash the active flag on globalThis (like the bus) so a dev hot-reload can't
@@ -34,6 +35,8 @@ export async function runPipeline() {
     const { survivor, bet } = await runBoardroom(ideas);
     const factory = await runFactory(survivor);
     const { finalUrl, finalDir } = await runMutation(survivor, bet, factory);
+    // Arm the Keyword Lab: blog publish routes rebuild + redeploy from this state.
+    setSiteState({ survivor, bet, copy: factory.copy, slug: factory.slug, blogs: [] });
     await runFounder(survivor, bet, { slug: factory.slug, dir: finalDir });
     ev.stage("done", "✅ Run complete");
     ev.done(finalUrl);

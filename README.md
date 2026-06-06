@@ -32,6 +32,12 @@ on its own launch success, then **rewrites its own code** until it wins the bet.
    **🚀 Hand-off Kit**: Darwin pushes the winning site to a fresh GitHub repo with a
    `BUILDME.md` relay prompt — clone it, open Claude Code / Codex, and continue straight
    into building the real product (recommended base: raphael-starterkit).
+6. **🔎 Keyword Lab** — Darwin maps the survivor's keyword opportunities (KD / volume /
+   intent, honest LLM estimates with a Similarweb verification path). Pick a keyword →
+   it writes an SEO post (internal links + external evidence links) → you EDIT it in
+   the Control Room → publish: the live site is rebuilt with the post + updated sitemap
+   and redeployed in seconds. The shipped site is not a poster — it's a growing SEO
+   machine you drive from the dashboard.
    DarwinSaaS is a long-term founder copilot, not a page generator.
 
 ## Run it

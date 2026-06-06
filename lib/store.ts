@@ -90,5 +90,6 @@ export const ev = {
   tasks: (tasks: any) => bus.emit({ type: "tasks", tasks, ts: now() }),
   handoff: (repoUrl: string, prompt: string) =>
     bus.emit({ type: "handoff", repoUrl, prompt, ts: now() }),
+  keywords: (keywords: any) => bus.emit({ type: "keywords", keywords, ts: now() }),
   done: (survivorUrl: string) => bus.emit({ type: "done", survivorUrl, ts: now() }),
 };
