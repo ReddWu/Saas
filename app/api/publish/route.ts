@@ -15,10 +15,11 @@ export async function POST(req: Request) {
   if (!site) {
     return NextResponse.json({ error: "No shipped site yet — run Darwin first." }, { status: 409 });
   }
-  const { title, slug, markdown } = (await req.json()) as {
+  const { title, slug, markdown, description } = (await req.json()) as {
     title: string;
     slug: string;
     markdown: string;
+    description?: string;
   };
   if (!title || !slug || !markdown) {
     return NextResponse.json({ error: "title, slug, markdown required" }, { status: 400 });
@@ -29,7 +30,7 @@ export async function POST(req: Request) {
 
   // Upsert into the published set, rebuild, redeploy (same -v2 project => same URL).
   const existing = site.blogs.findIndex((b) => b.slug === safeSlug);
-  const entry = { slug: safeSlug, title, html };
+  const entry = { slug: safeSlug, title, description, html };
   if (existing >= 0) site.blogs[existing] = entry;
   else site.blogs.push(entry);
 

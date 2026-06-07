@@ -1,5 +1,10 @@
 # ✍️ Hand-off: the Blog Writer (Keyword Lab's content engine)
 
+> ⚠️ **STATUS: DONE — superseded.** The owner implemented the production version
+> (raw TITLE/DESCRIPTION/markdown protocol — JSON wrapping of long articles kept
+> truncating). Verified live: 1,445 words, FAQ, 8 internal + 3 external links.
+> Blog agent: stand down; do not overwrite lib/blogwriter.ts.
+
 **You are the blog agent.** Improve EXACTLY ONE file — `lib/blogwriter.ts` — which already
 exists with a working placeholder. Do **NOT** edit any other file: the Keyword Lab UI,
 API routes, sitegen, types, and mock provider are owned by another agent working

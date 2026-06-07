@@ -119,6 +119,7 @@ export function mdToHtml(md: string): string {
 export interface BlogEntry {
   slug: string;
   title: string;
+  description?: string; // per-post meta description (falls back to the site's)
   html: string; // body html (already converted from markdown)
 }
 
@@ -140,16 +141,16 @@ export function renderStrong(
     offers: { "@type": "Offer", price: "19", priceCurrency: "USD" },
   }).replace(/</g, "\\u003c");
 
-  const page = (title: string, bodyHtml: string, extraHead = "") => `<!doctype html>
+  const page = (title: string, bodyHtml: string, extraHead = "", pageDesc = desc) => `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
-<meta name="description" content="${desc}">
+<meta name="description" content="${pageDesc}">
 <link rel="canonical" href="/">
 <meta property="og:title" content="${esc(title)}">
-<meta property="og:description" content="${desc}">
+<meta property="og:description" content="${pageDesc}">
 <meta name="robots" content="index,follow">
 ${extraHead}
 <style>${css}</style>
@@ -204,7 +205,9 @@ ${extraHead}
   <article class="hero">${b.html}</article>
   <p><a class="cta" href="/">← ${esc(idea.title)}</a></p>
   ${nav}
-</div>`
+</div>`,
+      "",
+      b.description ? esc(b.description) : desc
     );
   }
   if (blogs.length) {

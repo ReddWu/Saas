@@ -1,0 +1,36 @@
+keyword,volume,kd,cpc_min,cpc_max,clicks,zero_click_pct,status,fetched_at
+"AI agent activity logging tool",,,,,,,no_data,2026-06-06T23:48:23.732Z
+"how to debug AI agents locally",,,,,,,no_data,2026-06-06T23:48:30.757Z
+"agentic workflow observability",,-,,,,,no_data,2026-06-06T23:48:40.578Z
+"AI agent audit log software",,,,,,,no_data,2026-06-06T23:48:47.733Z
+"local AI agent monitoring tool",,,,,,,no_data,2026-06-06T23:48:54.767Z
+"AI agent compliance reporting",,,,,,,no_data,2026-06-06T23:49:02.068Z
+"replay AI agent actions debug",,,,,,,no_data,2026-06-06T23:49:09.129Z
+"best observability tool for AI agents",,,,,,,no_data,2026-06-06T23:49:17.028Z
+"AI agent observability",,,,,,,no_data,2026-06-06T23:50:00.720Z
+"LLM observability",,,,,,,no_data,2026-06-06T23:50:08.067Z
+"AI agent monitoring",,,,,,,no_data,2026-06-06T23:50:16.032Z
+"agent observability",3.2K,17,,,1.1K,79%,ok,2026-06-06T23:50:26.326Z
+"LLM monitoring",,,,,,,no_data,2026-06-06T23:50:34.018Z
+"LLM tracing",,,,,,,no_data,2026-06-06T23:50:41.919Z
+"AI agent debugging",,,,,,,no_data,2026-06-06T23:50:50.528Z
+"agentops",5.7K,30,0.59,24.74,2.5K,39%,ok,2026-06-06T23:51:00.371Z
+"langsmith",123.8K,38,0.29,24.43,101K,30%,ok,2026-06-06T23:51:11.379Z
+"langfuse",154.5K,48,0.17,24.44,124.7K,40%,ok,2026-06-06T23:51:21.535Z
+"AI audit",,,,,,,no_data,2026-06-06T23:51:29.723Z
+"AI agent security",,,,,,,no_data,2026-06-06T23:51:37.877Z
+"ai agent observability",310,23,,,126,92%,ok,2026-06-06T23:52:33.914Z
+"llm observability",1.4K,12,6.92,30.19,700,86%,ok,2026-06-06T23:52:44.709Z
+"ai agent monitoring",260,-,,,4,60%,ok,2026-06-06T23:52:55.672Z
+"llm monitoring",100,-,,,82,94%,ok,2026-06-06T23:53:05.505Z
+"llm tracing",360,35,,,9,53%,ok,2026-06-06T23:53:15.926Z
+"ai agent debugging",,-,,,,,no_data,2026-06-06T23:53:26.685Z
+"ai audit",3.4K,42,0.17,19.91,1.2K,92%,ok,2026-06-06T23:53:48.823Z
+"ai agent security",3.7K,17,,,1.9K,71%,ok,2026-06-06T23:53:59.837Z
+"ai agent activity logging tool",,-,,,,,no_data,2026-06-06T23:54:10.791Z
+"how to debug ai agents locally",,,,,,,no_data,2026-06-06T23:54:19.272Z
+"ai agent audit log software",,-,,,,,no_data,2026-06-06T23:54:29.975Z
+"local ai agent monitoring tool",,-,,,,,no_data,2026-06-06T23:54:41.021Z
+"ai agent compliance reporting",7,9,,,,59%,ok,2026-06-06T23:54:52.004Z
+"replay ai agent actions debug",,,,,,,no_data,2026-06-06T23:55:00.472Z
+"best observability tool for ai agents",,-,,,,,no_data,2026-06-06T23:55:10.694Z

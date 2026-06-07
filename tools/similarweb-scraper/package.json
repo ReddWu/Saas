@@ -1,0 +1,12 @@
+{
+  "name": "similarweb-scraper",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "login": "node login-probe.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.49.0"
+  }
+}

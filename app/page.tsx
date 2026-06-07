@@ -35,7 +35,7 @@ export default function ControlRoom() {
   const [handoff, setHandoff] = useState<{ repoUrl: string; prompt: string } | null>(null);
   const [copied, setCopied] = useState(false);
   const [keywords, setKeywords] = useState<KeywordRow[]>([]);
-  const [draft, setDraft] = useState<{ keyword: string; title: string; slug: string; markdown: string } | null>(null);
+  const [draft, setDraft] = useState<{ keyword: string; title: string; slug: string; description?: string; markdown: string } | null>(null);
   const [labBusy, setLabBusy] = useState<string | null>(null); // keyword being generated / "publish"
   const [publishedUrl, setPublishedUrl] = useState<string | null>(null);
   const feedRef = useRef<HTMLDivElement>(null);
@@ -111,7 +111,7 @@ export default function ControlRoom() {
         body: JSON.stringify({ keyword: kw }),
       });
       const d = await res.json();
-      if (d?.markdown) setDraft({ keyword: kw.keyword, title: d.title, slug: d.slug, markdown: d.markdown });
+      if (d?.markdown) setDraft({ keyword: kw.keyword, title: d.title, slug: d.slug, description: d.description, markdown: d.markdown });
     } finally { setLabBusy(null); }
   }
 
@@ -121,7 +121,7 @@ export default function ControlRoom() {
     try {
       const res = await fetch("/api/publish", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title: draft.title, slug: draft.slug, markdown: draft.markdown }),
+        body: JSON.stringify({ title: draft.title, slug: draft.slug, description: draft.description, markdown: draft.markdown }),
       });
       const d = await res.json();
       if (d?.url) { setPublishedUrl(d.url); setDraft(null); }
@@ -368,7 +368,7 @@ export default function ControlRoom() {
                   <td className={k.kd != null && k.kd < 30 ? "kd easy" : "kd"}>{k.kd ?? "—"}</td>
                   <td>{k.volume.toLocaleString()}</td>
                   <td>{k.intent}</td>
-                  <td><span className={`src ${k.source}`}>{k.source === "est" ? "est." : "Similarweb"}</span></td>
+                  <td><span className={`src ${k.source}`}>{k.source === "est" ? "est." : k.source === "suggest" ? "✓ live demand" : "Similarweb"}</span></td>
                   <td>
                     <button className="kwbtn" disabled={!!labBusy} onClick={() => generateBlog(k)}>
                       {labBusy === k.keyword ? "✍️ writing…" : "✍️ Generate blog"}

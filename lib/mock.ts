@@ -176,14 +176,48 @@ export function mockLlm(prompt: string, system?: string): string {
       { keyword: "webhook reliability checklist", kd: 19, volume: 340, intent: "how-to" },
     ]);
   }
-  // Keyword Lab — blog draft
+  // Keyword Lab — blog draft (raw TITLE/DESCRIPTION/--- markdown protocol)
   if (/SEO blog post/i.test(prompt)) {
-    const kw = (prompt.match(/Target keyword: "([^"]+)"/) || [])[1] || "the keyword";
-    return JSON.stringify({
-      title: `${kw[0].toUpperCase()}${kw.slice(1)} — the practical guide`,
-      slug: kw.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-      markdown: `# ${kw} — the practical guide\n\nIf you ship software, ${kw} is not optional — it's the difference between silent failures and a system you can trust.\n\n## Why this matters\n\nTeams lose real revenue to unhandled edge cases. The [official webhook docs](https://docs.github.com/en/webhooks) and [MDN's HTTP guide](https://developer.mozilla.org/en-US/docs/Web/HTTP) both stress idempotency and retries.\n\n## The checklist\n\n- Verify signatures on every delivery\n- Retry with exponential backoff\n- Log and replay failures — see our [use cases](/use-cases.html)\n\n## How we handle it\n\nOur approach is built directly around this pain — simple [pricing](/pricing.html), no surprises.\n\n## Get started\n\nStop losing deliveries today — [try it now](/).`,
-    });
+    const kw = (prompt.match(/TARGET KEYWORD: "([^"]+)"/) || [])[1] || "the keyword";
+    const Kw = kw[0].toUpperCase() + kw.slice(1);
+    return [
+      `TITLE: ${Kw}: a field guide that actually works`,
+      `DESCRIPTION: ${Kw} explained by practitioners — concrete steps, trade-offs, and an FAQ, with evidence and examples you can apply today.`,
+      `---`,
+      `# ${Kw}: a field guide that actually works`,
+      ``,
+      `If you've searched for ${kw}, you've probably hit the same wall we did: generic advice that falls apart in production. This guide is the distillation of what actually held up.`,
+      ``,
+      `## Why ${kw} goes wrong`,
+      ``,
+      `Most teams treat this as an afterthought. The result is silent failure: the [HTTP spec](https://developer.mozilla.org/en-US/docs/Web/HTTP) is forgiving, your revenue is not. Industry post-mortems collected on [Wikipedia](https://en.wikipedia.org/wiki/Postmortem_documentation) repeat the same pattern.`,
+      ``,
+      `## The approach that held up`,
+      ``,
+      `- Start from the failure case, not the happy path`,
+      `- Make every step observable before you automate it`,
+      `- Write down the recovery procedure — see our [use cases](/use-cases.html)`,
+      `- Price the cost of NOT doing it — our [pricing](/pricing.html) page shows the math`,
+      ``,
+      `## A worked example`,
+      ``,
+      `We walk a real scenario end-to-end: detection, diagnosis, fix, verification. Each step maps to a section of the checklist above and takes minutes, not days.`,
+      ``,
+      `## FAQ`,
+      ``,
+      `### Is this overkill for a small project?`,
+      `No — the smaller the project, the cheaper the habit is to install.`,
+      ``,
+      `### What tooling do I need?`,
+      `Nothing exotic. The workflow above plus any log viewer covers 90% of cases.`,
+      ``,
+      `### How do I know it's working?`,
+      `You stop discovering failures from your users — they show up in your dashboard first.`,
+      ``,
+      `## Stop fighting this by hand`,
+      ``,
+      `This is exactly the pain we built for. [Try it now](/) — setup takes minutes.`,
+    ].join("\n");
   }
   return "{}";
 }

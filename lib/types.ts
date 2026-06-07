@@ -81,7 +81,9 @@ export interface KeywordRow {
   kd: number | null; // 0-100 difficulty, null = unknown
   volume: number; // monthly searches
   intent: string; // e.g. "comparison", "how-to", "tool"
-  source: "est" | "similarweb";
+  // est = LLM estimate; suggest = matches live Google Autosuggest (real demand);
+  // similarweb = verified KD/volume via the Similarweb scraper path.
+  source: "est" | "suggest" | "similarweb";
 }
 
 // Events streamed to the Control Room (and later persisted to InsForge realtime).

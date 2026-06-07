@@ -8,6 +8,7 @@ import type { fallbackCopy } from "./sitegen";
 export interface PublishedBlog {
   slug: string;
   title: string;
+  description?: string; // per-post meta description
   html: string; // rendered body html
 }
 

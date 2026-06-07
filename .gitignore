@@ -22,3 +22,8 @@ out
 .roo
 .trae
 .windsurf
+
+# Similarweb scraper session/state — never commit
+tools/similarweb-scraper/.auth.json
+tools/similarweb-scraper/.*-progress.json
+tools/similarweb-scraper/.*.mjs
