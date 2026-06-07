@@ -159,7 +159,9 @@ ${extraHead}
 </html>`;
 
   const nav = `<nav class="links">
-    ${copy.seoPages.map((p) => `<a href="/${esc(p.slug)}.html">${esc(p.h1)}</a>`).join("\n    ")}
+    ${copy.seoPages.map((p) => `<a href="/${esc(p.slug)}.html">${esc(p.h1)}</a>`).join("\n    ")}${
+      blogs.length ? `\n    <a href="/blog.html">Blog</a>` : ""
+    }
   </nav>`;
 
   const home = page(
@@ -177,6 +179,14 @@ ${extraHead}
         .map((f) => `<article class="card"><h3>${esc(f.title)}</h3><p>${esc(f.body)}</p></article>`)
         .join("\n      ")}
     </section>
+    ${
+      blogs.length
+        ? `<section class="card" style="margin-top:48px"><h3>From the blog</h3>
+      <ul style="margin:8px 0 0 20px">${blogs
+        .map((b) => `<li><a style="color:#9fb0c8" href="/blog-${esc(b.slug)}.html">${esc(b.title)}</a></li>`)
+        .join("\n      ")}</ul></section>`
+        : ""
+    }
     ${nav}
   </main>
   <footer>${esc(idea.title)} — evolved to win its bet (${esc(bet.hypothesis)}).</footer>
